@@ -1,139 +1,210 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMS Controller</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-* {
-    box-sizing: border-box;
-}
+    <title>SMS Controller</title>
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #101827;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-}
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-.container {
-    width: 90%;
-    max-width: 400px;
-    padding: 25px;
-    background: #1e293b;
-    border-radius: 15px;
-    text-align: center;
-}
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #101827;
+            color: white;
 
-input {
-    width: 100%;
-    padding: 14px;
-    margin: 15px 0;
-    border: 1px solid #475569;
-    border-radius: 8px;
-    background: #0f172a;
-    color: white;
-    font-size: 17px;
-}
+            display: flex;
+            justify-content: center;
+            align-items: center;
 
-.buttons {
-    display: flex;
-    gap: 15px;
-}
+            min-height: 100vh;
+        }
 
-button {
-    flex: 1;
-    padding: 16px;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-}
+        .container {
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
 
-.on {
-    background: #16a34a;
-}
+            background: #1e293b;
+            border-radius: 15px;
 
-.off {
-    background: #dc2626;
-}
+            text-align: center;
+        }
 
-.status {
-    margin: 20px 0;
-    font-size: 20px;
-}
-</style>
+        h2 {
+            margin-top: 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 15px 0;
+
+            border: 1px solid #475569;
+            border-radius: 8px;
+
+            background: #0f172a;
+            color: white;
+
+            font-size: 17px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #3b82f6;
+        }
+
+        .status {
+            margin: 20px 0;
+            font-size: 20px;
+        }
+
+        #status {
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px;
+
+            border: none;
+            border-radius: 8px;
+
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        .on {
+            background: #16a34a;
+        }
+
+        .off {
+            background: #dc2626;
+        }
+
+        .on:hover {
+            background: #15803d;
+        }
+
+        .off:hover {
+            background: #b91c1c;
+        }
+
+        .info {
+            margin-top: 20px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+    </style>
+
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <h2>SMS Controller</h2>
+        <h2>SMS Controller</h2>
 
-    <input
-        type="tel"
-        id="phone"
-        placeholder="Enter mobile number"
-    >
+        <!-- Mobile Number -->
+        <input
+            type="tel"
+            id="phone"
+            placeholder="Enter mobile number"
+            autocomplete="tel"
+        >
 
-    <div class="status">
-        Status: <span id="status">OFF</span>
+        <!-- Current Status -->
+        <div class="status">
+            Status:
+            <span id="status">OFF</span>
+        </div>
+
+        <!-- ON/OFF Buttons -->
+        <div class="buttons">
+
+            <button class="on" onclick="sendSMS('ON')">
+                ON
+            </button>
+
+            <button class="off" onclick="sendSMS('OFF')">
+                OFF
+            </button>
+
+        </div>
+
+        <div class="info">
+            Messages will open in your default SMS application.
+        </div>
+
     </div>
 
-    <div class="buttons">
-        <button class="on" onclick="sendSMS('ON')">
-            ON
-        </button>
+    <script>
 
-        <button class="off" onclick="sendSMS('OFF')">
-            OFF
-        </button>
-    </div>
+        // Get HTML elements
+        const phoneInput = document.getElementById("phone");
+        const statusText = document.getElementById("status");
 
-</div>
+        // Load previously saved mobile number
+        phoneInput.value = localStorage.getItem("mobileNumber") || "";
 
-<script>
+        // Save mobile number whenever it changes
+        phoneInput.addEventListener("input", function () {
 
-// Load previously saved mobile number
-const phoneInput = document.getElementById("phone");
+            localStorage.setItem("mobileNumber", this.value);
 
-phoneInput.value = localStorage.getItem("mobileNumber") || "";
+        });
 
-// Save mobile number whenever it changes
-phoneInput.addEventListener("input", function() {
-    localStorage.setItem("mobileNumber", this.value);
-});
+        // Send SMS
+        function sendSMS(command) {
 
-// Send SMS
-function sendSMS(command) {
+            // Get mobile number
+            const phone = phoneInput.value.trim();
 
-    const phone = phoneInput.value.trim();
+            // Validate mobile number
+            if (!phone) {
 
-    if (!phone) {
-        alert("Please enter mobile number");
-        return;
-    }
+                alert("Please enter mobile number");
 
-    // Update status
-    document.getElementById("status").textContent = command;
+                phoneInput.focus();
 
-    // Prepare SMS URL
-    const smsURL = `sms:${phone}?body=${encodeURIComponent(command)}`;
+                return;
+            }
 
-    // Open default messaging application
-    window.location.href = smsURL;
-}
+            // Update status
+            statusText.textContent = command;
 
-</script>
+            // Update status color
+            statusText.style.color =
+                command === "ON" ? "#22c55e" : "#ef4444";
+
+            // Prepare normal SMS URL
+            const smsURL =
+                `sms:${phone}?body=${encodeURIComponent(command)}`;
+
+            // Open default Android SMS application
+            window.location.href = smsURL;
+
+        }
+
+    </script>
 
 </body>
+
 </html>
