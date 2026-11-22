@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMS Controller</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #101827;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 400px;
+    padding: 25px;
+    background: #1e293b;
+    border-radius: 15px;
+    text-align: center;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    margin: 15px 0;
+    border: 1px solid #475569;
+    border-radius: 8px;
+    background: #0f172a;
+    color: white;
+    font-size: 17px;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+}
+
+button {
+    flex: 1;
+    padding: 16px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.on {
+    background: #16a34a;
+}
+
+.off {
+    background: #dc2626;
+}
+
+.status {
+    margin: 20px 0;
+    font-size: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>SMS Controller</h2>
+
+    <input
+        type="tel"
+        id="phone"
+        placeholder="Enter mobile number"
+    >
+
+    <div class="status">
+        Status: <span id="status">OFF</span>
+    </div>
+
+    <div class="buttons">
+        <button class="on" onclick="sendSMS('ON')">
+            ON
+        </button>
+
+        <button class="off" onclick="sendSMS('OFF')">
+            OFF
+        </button>
+    </div>
+
+</div>
+
+<script>
+
+// Load previously saved mobile number
+const phoneInput = document.getElementById("phone");
+
+phoneInput.value = localStorage.getItem("mobileNumber") || "";
+
+// Save mobile number whenever it changes
+phoneInput.addEventListener("input", function() {
+    localStorage.setItem("mobileNumber", this.value);
+});
+
+// Send SMS
+function sendSMS(command) {
+
+    const phone = phoneInput.value.trim();
+
+    if (!phone) {
+        alert("Please enter mobile number");
+        return;
+    }
+
+    // Update status
+    document.getElementById("status").textContent = command;
+
+    // Prepare SMS URL
+    const smsURL = `sms:${phone}?body=${encodeURIComponent(command)}`;
+
+    // Open default messaging application
+    window.location.href = smsURL;
+}
+
+</script>
+
+</body>
+</html>
