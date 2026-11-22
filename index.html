@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>SMS Controller</title>
+    <title>Kisan Mobile Controller</title>
 
     <style>
         * {
@@ -14,36 +14,44 @@
 
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #101827;
-            color: white;
+            padding: 20px;
+            min-height: 100vh;
 
             display: flex;
             justify-content: center;
             align-items: center;
 
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+
+            background: #101827;
+            color: white;
         }
 
         .container {
-            width: 90%;
-            max-width: 400px;
+            width: 100%;
+            max-width: 420px;
+
             padding: 25px;
 
             background: #1e293b;
             border-radius: 15px;
-
-            text-align: center;
         }
 
         h2 {
+            text-align: center;
             margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #cbd5e1;
         }
 
         input {
             width: 100%;
             padding: 14px;
-            margin: 15px 0;
 
             border: 1px solid #475569;
             border-radius: 8px;
@@ -51,7 +59,7 @@
             background: #0f172a;
             color: white;
 
-            font-size: 17px;
+            font-size: 16px;
             outline: none;
         }
 
@@ -59,59 +67,109 @@
             border-color: #3b82f6;
         }
 
-        .status {
-            margin: 20px 0;
-            font-size: 20px;
+        input::placeholder {
+            color: #64748b;
         }
 
-        #status {
-            font-weight: bold;
+        .section {
+            margin-bottom: 25px;
         }
 
-        .buttons {
+        .phone-actions {
             display: flex;
-            gap: 15px;
+            gap: 10px;
+            margin-top: 10px;
         }
 
         button {
-            flex: 1;
-            padding: 16px;
+            padding: 14px;
 
             border: none;
             border-radius: 8px;
 
             color: white;
-            font-size: 18px;
+            font-size: 15px;
             font-weight: bold;
 
             cursor: pointer;
         }
 
         button:active {
-            transform: scale(0.96);
+            transform: scale(0.97);
         }
 
-        .on {
+        .clear-btn {
+            background: #64748b;
+            flex: 1;
+        }
+
+        .number-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .number-group input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .send-btn {
+            width: 95px;
+            background: #2563eb;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .on-btn,
+        .off-btn {
+            flex: 1;
+            padding: 17px;
+            font-size: 18px;
+        }
+
+        .on-btn {
             background: #16a34a;
         }
 
-        .off {
+        .off-btn {
             background: #dc2626;
         }
 
-        .on:hover {
-            background: #15803d;
-        }
-
-        .off:hover {
-            background: #b91c1c;
-        }
-
-        .info {
+        .status {
+            text-align: center;
             margin-top: 20px;
+            font-size: 16px;
             color: #94a3b8;
-            font-size: 12px;
         }
+
+        #status {
+            font-weight: bold;
+            color: #22c55e;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 360px) {
+            .number-group {
+                gap: 6px;
+            }
+
+            .send-btn {
+                width: 75px;
+                font-size: 13px;
+            }
+        }
+
     </style>
 
 </head>
@@ -120,88 +178,280 @@
 
     <div class="container">
 
-        <h2>SMS Controller</h2>
+        <h2>Kisan Mobile Controller</h2>
 
-        <!-- Mobile Number -->
-        <input
-            type="tel"
-            id="phone"
-            placeholder="Enter mobile number"
-            autocomplete="tel"
-        >
 
-        <!-- Current Status -->
-        <div class="status">
-            Status:
-            <span id="status">OFF</span>
+        <!-- DESTINATION MOBILE NUMBER -->
+
+        <div class="section">
+
+            <h3>Destination Mobile Number</h3>
+
+            <input
+                type="tel"
+                id="phone"
+                placeholder="Enter mobile number"
+                autocomplete="tel"
+            >
+
+            <div class="phone-actions">
+
+                <button
+                    class="clear-btn"
+                    onclick="clearPhone()"
+                >
+                    Clear Number
+                </button>
+
+            </div>
+
         </div>
 
-        <!-- ON/OFF Buttons -->
+
+        <!-- THREE CONFIGURATION NUMBERS -->
+
+        <div class="section">
+
+            <h3>1st Number</h3>
+
+            <div class="number-group">
+
+                <input
+                    type="tel"
+                    id="number1"
+                    placeholder="Enter 10 digit number"
+                    maxlength="10"
+                    inputmode="numeric"
+                >
+
+                <button
+                    class="send-btn"
+                    onclick="sendNumber(1)"
+                >
+                    SEND
+                </button>
+
+            </div>
+
+
+            <h3>2nd Number</h3>
+
+            <div class="number-group">
+
+                <input
+                    type="tel"
+                    id="number2"
+                    placeholder="Enter 10 digit number"
+                    maxlength="10"
+                    inputmode="numeric"
+                >
+
+                <button
+                    class="send-btn"
+                    onclick="sendNumber(2)"
+                >
+                    SEND
+                </button>
+
+            </div>
+
+
+            <h3>3rd Number</h3>
+
+            <div class="number-group">
+
+                <input
+                    type="tel"
+                    id="number3"
+                    placeholder="Enter 10 digit number"
+                    maxlength="10"
+                    inputmode="numeric"
+                >
+
+                <button
+                    class="send-btn"
+                    onclick="sendNumber(3)"
+                >
+                    SEND
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ON / OFF BUTTONS -->
+
         <div class="buttons">
 
-            <button class="on" onclick="sendSMS('ON')">
+            <button
+                class="on-btn"
+                onclick="sendCommand('ON')"
+            >
                 ON
             </button>
 
-            <button class="off" onclick="sendSMS('OFF')">
+            <button
+                class="off-btn"
+                onclick="sendCommand('OFF')"
+            >
                 OFF
             </button>
 
         </div>
 
-        <div class="info">
-            Messages will open in your default SMS application.
+
+        <!-- STATUS -->
+
+        <div class="status">
+
+            Status: <span id="status">OFF</span>
+
+        </div>
+
+        <div class="message" id="message">
+            Ready
         </div>
 
     </div>
 
+
     <script>
 
-        // Get HTML elements
+        // HTML Elements
+
         const phoneInput = document.getElementById("phone");
+
         const statusText = document.getElementById("status");
 
-        // Load previously saved mobile number
-        phoneInput.value = localStorage.getItem("mobileNumber") || "";
+        const messageText = document.getElementById("message");
 
-        // Save mobile number whenever it changes
+
+        // Load saved destination number
+
+        phoneInput.value =
+            localStorage.getItem("destinationNumber") || "";
+
+
+        // Save destination number automatically
+
         phoneInput.addEventListener("input", function () {
 
-            localStorage.setItem("mobileNumber", this.value);
+            localStorage.setItem(
+                "destinationNumber",
+                this.value
+            );
 
         });
 
-        // Send SMS
-        function sendSMS(command) {
 
-            // Get mobile number
+        // Clear saved destination number
+
+        function clearPhone() {
+
+            localStorage.removeItem("destinationNumber");
+
+            phoneInput.value = "";
+
+            alert("Destination number cleared!");
+
+        }
+
+
+        // Validate destination number
+
+        function validatePhone() {
+
             const phone = phoneInput.value.trim();
 
-            // Validate mobile number
             if (!phone) {
 
-                alert("Please enter mobile number");
+                alert("Please enter destination mobile number");
 
                 phoneInput.focus();
 
-                return;
+                return false;
+
             }
 
-            // Update status
-            statusText.textContent = command;
+            return phone;
 
-            // Update status color
-            statusText.style.color =
-                command === "ON" ? "#22c55e" : "#ef4444";
+        }
 
-            // Prepare normal SMS URL
+
+        // Open default SMS application
+
+        function openSMS(phone, command) {
+
             const smsURL =
                 `sms:${phone}?body=${encodeURIComponent(command)}`;
 
-            // Open default Android SMS application
             window.location.href = smsURL;
 
+            messageText.textContent =
+                "Opening SMS application...";
+
         }
+
+
+        // Send ON / OFF commands
+
+        function sendCommand(command) {
+
+            const phone = validatePhone();
+
+            if (!phone) return;
+
+            statusText.textContent = command;
+
+            statusText.style.color =
+                command === "ON" ? "#22c55e" : "#ef4444";
+
+            openSMS(phone, command);
+
+        }
+
+
+        // Send configured numbers
+
+        function sendNumber(number) {
+
+            const phone = validatePhone();
+
+            if (!phone) return;
+
+            const input = document.getElementById(
+                "number" + number
+            );
+
+            const enteredNumber = input.value.trim();
+
+            // Validate exactly 10 digits
+
+            if (!/^\d{10}$/.test(enteredNumber)) {
+
+                alert(
+                    "Please enter a valid 10 digit number for " +
+                    number + "st/nd/rd input"
+                );
+
+                input.focus();
+
+                return;
+
+            }
+
+            // Prepare command
+
+            const command =
+                `@${number}C${enteredNumber}#`;
+
+            // Open normal SMS application
+
+            openSMS(phone, command);
+
+        }
+
 
     </script>
 
